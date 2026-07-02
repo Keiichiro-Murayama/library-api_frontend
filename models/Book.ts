@@ -18,7 +18,7 @@ import { BookCategory } from "./BookCategory";
  * 図書interface
  */
 export interface Book {
-  bookid: string;
+  bookId: string;
   title: string; // 図書名
   author: string; // 著者
   category: BookCategory; // 商品カテゴリ

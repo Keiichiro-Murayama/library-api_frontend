@@ -29,6 +29,16 @@ const nextConfig: NextConfig = {
         source: "/proxy-api/books/:path*",
         destination: "http://20.78.35.126/app2/library/api/books/:path*",
       },
+      {
+        /**
+         * 商品管理API用のプロキシ設定
+         * source: フロントエンド側で呼び出すURL
+         * destination: 商品管理APIエンドポイント
+         * 補助API用
+         */
+        source: "/proxy-api/:path*",
+        destination: "http://20.78.35.126/app2/library/api/:path*",
+      },
     ];
   },
 };

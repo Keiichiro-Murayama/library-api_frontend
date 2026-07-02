@@ -1,12 +1,29 @@
 import { IBookRepository } from "@/Interfaces/IBookRepository";
 import { Book } from "@/models/Book";
+import { BookRegistration } from "@/models/BookRegistration";
 import { injectable } from "inversify";
+
+//指定したミリ秒だけ待機するsleep関数を定義
+const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 @injectable()
 export class BookRepository implements IBookRepository {
-  //キーワード検索
+  /**
+   * キーワード検索
+   * @param keyword
+   * @returns
+   */
   public async searchKeyword(keyword: string): Promise<Book[]> {
-    console.log(keyword);
+    ///検索時間を意図的に設ける
+    console.log("処理を開始します");
+    for (let i = 1; i <= 3; i++) {
+      await sleep(1000); // 1秒（1000ms）待機
+      console.log(
+        `${i}回目のスリープが完了しました (${new Date().toLocaleTimeString()})`,
+      );
+    }
     const params = new URLSearchParams({ keyword: keyword });
     const response = await fetch(`/proxy-api/books?${params.toString()}`, {
       method: "GET",
@@ -33,5 +50,63 @@ export class BookRepository implements IBookRepository {
     // 成功時は商品リスト(JSON)をパースして返却する
     const books: Book[] = await response.json();
     return books;
+  }
+
+  /**
+   * 図書の重複確認
+   * @param name
+   */
+  async existsByName(name: string): Promise<void> {
+    // const session = await getSession();
+    // const token = (session as any)?.user?.token;
+    const params = new URLSearchParams({ bookName: name });
+    const response = await fetch(
+      `/proxy-api/books/new/validate?${params.toString()}`,
+      {
+        method: "GET",
+        // headers: {
+        //   // Authorization: `Bearer ${token}`,
+        // },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      if (errorData.message) {
+        throw new Error(errorData.message);
+      }
+      if (errorData.errors) {
+        const messages = Object.values(errorData.errors).flat().join("\n");
+        throw new Error(messages);
+      }
+      throw new Error("図書名の検証に失敗しました。");
+    }
+  }
+
+  async register(book: BookRegistration): Promise<Book> {
+    // const session = await getSession();
+    // const token = (session as any)?.user?.token;
+    const response = await fetch("/proxy-api/books/register", {
+      method: "POST",
+      headers: {
+        // Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(book), // DTOをJSON文字列に変換して送信する
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      if (errorData.message) {
+        throw new Error(errorData.message);
+      }
+      if (errorData.errors) {
+        const messages = Object.values(errorData.errors).flat().join("\n");
+        throw new Error(messages);
+      }
+      throw new Error(`図書の登録に失敗しました (Status: ${response.status})`);
+    }
+    // 登録完了後、バックエンドから返却された完全な商品データ(UUID含む)を返す
+    return await response.json();
   }
 }

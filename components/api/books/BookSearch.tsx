@@ -14,6 +14,7 @@ import {
 import { useSearchBook } from "@/components/hooks/useSearchBook";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 export const BookSearch = () => {
   // 検索ボックスに入力されたキーワード文字列を保持するローカルState
@@ -35,19 +36,19 @@ export const BookSearch = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-border">
+    <div className="max-w-4xl mx-auto bg-white p-8  shadow-sm border border-border">
       <h2 className="text-2xl font-bold text-foreground mb-6 text-center border-b pb-4">
         図書キーワード検索
       </h2>
+      {/* エラーメッセージを表示する */}
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">{error}</span>
+        </div>
+      )}
       {/* 検索入力エリア */}
       <div className="flex justify-center items-center gap-4 mb-8">
-        {/* エラーメッセージを表示する */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-md flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
-            <AlertCircle className="h-5 w-5" />
-            <span className="font-medium">{error}</span>
-          </div>
-        )}
         <Label htmlFor="keyword-input">書名キーワード</Label>
         <Input
           id="keyword-input"
@@ -112,7 +113,7 @@ export const BookSearch = () => {
               </TableHeader>
               <TableBody>
                 {books.map((book) => (
-                  <TableRow key={book.bookid}>
+                  <TableRow key={book.bookId}>
                     <TableCell className="font-medium">{book.title}</TableCell>
                     <TableCell className="font-medium">{book.author}</TableCell>
                     <TableCell className="font-medium">

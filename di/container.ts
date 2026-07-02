@@ -4,6 +4,8 @@ import { IBookRepository } from "@/Interfaces/IBookRepository";
 import { BookRepository } from "@/Infrastructures/BookRepository";
 import { ISearchBookService } from "@/Interfaces/ISearchBookService";
 import { SearchBookService } from "@/Services/SearchBookService";
+import { IBookCategoryRepository } from "@/Interfaces/IBookCategoryRepository";
+import { BookCategoryRepository } from "@/Infrastructures/BookCategoryRepository";
 
 /**
  * 演習 6-2 データアクセスとサービスを実装する
@@ -23,6 +25,9 @@ const container = new Container();
 //   .bind<IProductRepository>(TYPES.IProductRepository)
 //   .to(ProductRepository);
 container.bind<IBookRepository>(TYPES.IBookRepository).to(BookRepository);
+container
+  .bind<IBookCategoryRepository>(TYPES.IBookCategoryRepository)
+  .to(BookCategoryRepository);
 container
   .bind<ISearchBookService>(TYPES.ISearchBookService)
   .to(SearchBookService);
