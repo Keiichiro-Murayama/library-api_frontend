@@ -20,7 +20,7 @@ export default function MenuPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         {/* 1. 登録 */}
-        <Link href="/books/create" className="block">
+        <Link href="/books/new" className="block">
           <Card className={menuCardStyle}>
             <BookPlus className="w-20 h-20 text-primary transition-transform duration-200" />
             <span className="font-medium">登録</span>

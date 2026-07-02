@@ -52,40 +52,10 @@ export class BookRepository implements IBookRepository {
     return books;
   }
 
-  /**
-   * 図書の重複確認
-   * @param name
-   */
-  async existsByName(name: string): Promise<void> {
-    // const session = await getSession();
-    // const token = (session as any)?.user?.token;
-    const params = new URLSearchParams({ bookName: name });
-    const response = await fetch(
-      `/proxy-api/books/new/validate?${params.toString()}`,
-      {
-        method: "GET",
-        // headers: {
-        //   // Authorization: `Bearer ${token}`,
-        // },
-      },
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      if (errorData.message) {
-        throw new Error(errorData.message);
-      }
-      if (errorData.errors) {
-        const messages = Object.values(errorData.errors).flat().join("\n");
-        throw new Error(messages);
-      }
-      throw new Error("図書名の検証に失敗しました。");
-    }
-  }
-
   async register(book: BookRegistration): Promise<Book> {
     // const session = await getSession();
     // const token = (session as any)?.user?.token;
+    console.log(book);
     const response = await fetch("/proxy-api/books/register", {
       method: "POST",
       headers: {

@@ -6,6 +6,6 @@ export interface IBookRepository {
    * @param keyword
    */
   searchKeyword(keyword: string): Promise<Book[]>;
-  existsByName(name: string): Promise<void>;
+  // existsByName(name: string): Promise<void>;
   register(book: BookRegistration): Promise<Book>;
 }

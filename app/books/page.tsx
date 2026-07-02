@@ -1,13 +1,11 @@
 import { BookSearch } from "@/components/api/books/BookSearch";
 /**
- * 演習 6-3 Reactコンポーネントを実装してUIを確認する
- * 商品キーワード検索ページ
+ * 図書キーワード検索ページ
  * URL: /products/search
  */
 export default function ProductSearchPage() {
   return (
     <main className="container mx-auto py-8">
-      {/* 先ほど作成したUIコンポーネントを呼び出す */}
       <BookSearch />
     </main>
   );
