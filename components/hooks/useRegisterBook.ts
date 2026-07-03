@@ -65,17 +65,12 @@ export const useRegisterBook = () => {
     }));
   }, []);
 
-  // --- カテゴリ選択時に詳細情報を取得する ---
   const handleCategoryChange = useCallback(async (categoryId: string) => {
     try {
-      const selectedCategory = categories.find(
-        (cat) => cat.categoryId === categoryId,
-      );
-      if (selectedCategory) {
+      if (categoryId) {
         setFormData((prev) => ({
           ...prev,
-          categoryId: selectedCategory.categoryId,
-          categoryName: selectedCategory.name,
+          categoryId: categoryId,
         }));
       }
     } catch (error: any) {

@@ -56,7 +56,7 @@ export class BookRepository implements IBookRepository {
     // const session = await getSession();
     // const token = (session as any)?.user?.token;
     console.log(book);
-    const response = await fetch("/proxy-api/books/register", {
+    const response = await fetch("/proxy-api/books/", {
       method: "POST",
       headers: {
         // Authorization: `Bearer ${token}`,
