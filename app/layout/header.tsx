@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/avatar";
 import { Library } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Header() {
   return (
