@@ -29,15 +29,6 @@ export class RegisterBookService implements IRegisterBookService {
     return await this.categoryRepository.findAll();
   }
 
-  // /**
-  //  * 入力終了時: 図書名の重複を検証する
-  //  * @param name 入力された図書名
-  //  * @throws 図書名が重複している場合はエラーをスローする
-  //  */
-  // async validateBookName(name: string): Promise<void> {
-  //   await this.bookRepository.existsByName(name);
-  // }
-
   /**
    * 登録実行時: 図書データを永続化する
    * @param book 登録する図書データ

@@ -1,57 +1,49 @@
 import { container } from "@/di/container";
 import { TYPES } from "@/di/types";
-import { IRegisterBookService } from "@/Interfaces/IRegisterBookService";
+import { IUpdateBookService } from "@/Interfaces/IUpdateBookService";
 import { Book } from "@/models/Book";
 import { BookCategory } from "@/models/BookCategory";
 import { BookRegistration } from "@/models/BookRegistration";
+import { BookUpdate } from "@/models/BookUpdate";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 
-/**
- * 図書登録画面の状態管理とイベントハンドリングを行うカスタムHook
- */
-export const useRegisterBook = () => {
+export const useUpdateBook = () => {
   // DIコンテナからサービスを取得する
-  const service = container.get<IRegisterBookService>(
-    TYPES.IRegisterBookService,
-  );
-  // --- Stateの定義 ---
-  const [formData, setFormData] = useState<BookRegistration>({
+  const service = container.get<IUpdateBookService>(TYPES.IUpdateBookService);
+
+  //State
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [formData, setFormData] = useState<BookUpdate>({
     title: "",
     author: "",
     stock: 0,
-    categoryId: "",
   });
-  const [categories, setCategories] = useState<BookCategory[]>([]);
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // 入力フォームと状態を初期化して、入力画面に戻る処理
+  // 変更フォームと状態を初期化して、入力画面に戻る処理
   const resetForm = useCallback(() => {
     setFormData({
       title: "",
       author: "",
       stock: 0,
-      categoryId: "",
     });
     setErrors({});
     setIsSuccess(false); // モーダルを閉じる
+    setSelectedBook(null);
   }, []);
 
-  // --- 画面初期表示時にカテゴリ一覧を取得する ---
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await service.getCategories();
-        setCategories(data);
-      } catch (error: any) {
-        setErrors((prev) => ({
-          ...prev,
-          system: "カテゴリ一覧の取得に失敗しました。",
-        }));
-      }
-    };
-    fetchCategories();
+  // 変更対象図書の選択イベント
+  const handleSelect = useCallback((book: Book) => {
+    setSelectedBook(book); // Stateを更新する
+    // 選択された図書のデータをフォームの初期値としてセットする
+    setFormData({
+      title: book.title,
+      author: book.author,
+      stock: book.stock,
+    });
   }, []);
 
   // --- 入力の変更イベント ---
@@ -64,29 +56,12 @@ export const useRegisterBook = () => {
     }));
   }, []);
 
-  const handleCategoryChange = useCallback(async (categoryId: string) => {
-    try {
-      if (categoryId) {
-        setFormData((prev) => ({
-          ...prev,
-          categoryId: categoryId,
-        }));
-      }
-    } catch (error: any) {
-      setErrors((prev) => ({
-        ...prev,
-        category: "カテゴリ詳細の取得に失敗しました。",
-      }));
-    }
-  }, []);
-
   // --- [登録]ボタンクリック時にデータを永続化する ---
   const handleSubmit = useCallback(async (): Promise<Book | null> => {
     setIsLoading(true);
     try {
       // サービスの登録処理を実行し、結果を返す
-
-      const result = await service.execute(formData);
+      const result = await service.execute(formData, selectedBook!.bookId);
       if (result) {
         setIsSuccess(true);
       }
@@ -99,15 +74,14 @@ export const useRegisterBook = () => {
     }
   }, [formData, service]);
 
-  // UIコンポーネントに必要なプロパティと関数を返す
   return {
+    selectedBook,
     formData,
-    categories,
     errors,
     isLoading,
     isSuccess,
+    handleSelect,
     handleChange,
-    handleCategoryChange,
     handleSubmit,
     resetForm,
   };

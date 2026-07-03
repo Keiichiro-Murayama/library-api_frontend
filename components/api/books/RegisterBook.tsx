@@ -14,6 +14,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { authOptions } from "../../../lib/auth";
+import Link from "next/link";
 
 /**
  * 演習 8-12 図書登録画面コンポーネントを実装し動作確認する
@@ -43,21 +44,20 @@ export const BookRegister = () => {
 
   return (
     <>
-      <div className="container mx-auto py-10 max-w-lg">
-        <h1 className="text-2xl font-bold mb-6">図書新規登録</h1>
+      <div className=" max-w-3xl mx-auto bg-white p-8 shadow-sm border border-border">
+        <h1 className="text-2xl font-bold text-foreground mb-6 text-center border-b pb-4">
+          図書新規登録
+        </h1>
 
         <form onSubmit={onSubmit} className="space-y-6">
           {/* 図書名入力 */}
           <div className="space-y-2">
-            <Label htmlFor="title">
-              図書名<span className="text-red-500">*</span>
-            </Label>
+            <Label htmlFor="title">図書名</Label>
             <Input
               id="title"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              // onBlur={handleNameBlur} // フォーカスアウト時に検証実行
               placeholder="例：下町ロケット"
               required
             />
@@ -68,9 +68,7 @@ export const BookRegister = () => {
 
           {/* 著者入力 */}
           <div className="space-y-2">
-            <Label htmlFor="author">
-              著者<span className="text-red-500">*</span>
-            </Label>
+            <Label htmlFor="author">著者</Label>
             <Input
               id="author"
               name="author"
@@ -133,7 +131,7 @@ export const BookRegister = () => {
           )}
 
           {/* 登録ボタン */}
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-center pt-4">
             <Button type="submit" className="w-48" disabled={isLoading}>
               {isLoading ? (
                 <>
@@ -154,13 +152,15 @@ export const BookRegister = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg text-center w-80">
             <h3 className="text-xl font-bold mb-4">登録完了</h3>
             <p className="text-gray-600 mb-8">図書の登録が完了しました。</p>
-            <Button
-              // ユーザーが「確認」を押したタイミングで入力画面へ遷移する
-              onClick={resetForm}
-              className="w-full"
-            >
-              入力画面に戻る
-            </Button>
+            <Link href={"/"}>
+              <Button
+                // ユーザーが「確認」を押したタイミングで入力画面へ遷移する
+                onClick={resetForm}
+                className="w-full"
+              >
+                ホーム画面に戻る
+              </Button>
+            </Link>
           </div>
         </div>
       )}

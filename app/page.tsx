@@ -39,7 +39,7 @@ export default function MenuPage() {
         <Link href="/books/edit" className="block">
           <Card className={menuCardStyle}>
             <RefreshCcw className="w-20 h-20 text-gray-600 transition-transform duration-200" />
-            <span className="font-medium">更新</span>
+            <span className="font-medium">変更</span>
           </Card>
         </Link>
 

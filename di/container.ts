@@ -8,6 +8,11 @@ import { IBookCategoryRepository } from "@/Interfaces/IBookCategoryRepository";
 import { BookCategoryRepository } from "@/Infrastructures/BookCategoryRepository";
 import { IRegisterBookService } from "@/Interfaces/IRegisterBookService";
 import { RegisterBookService } from "@/Services/RegisterBookService";
+import { IUpdateBookService } from "@/Interfaces/IUpdateBookService";
+import { UpdateBookService } from "@/Services/UpdateBookService";
+import { IDeleteBookService } from "@/Interfaces/IDeleteBookService";
+import { Delete } from "lucide-react";
+import { DeleteBookService } from "@/Services/DeleteBookService";
 
 /**
  * 演習 6-2 データアクセスとサービスを実装する
@@ -36,5 +41,11 @@ container
 container
   .bind<IRegisterBookService>(TYPES.IRegisterBookService)
   .to(RegisterBookService);
+container
+  .bind<IUpdateBookService>(TYPES.IUpdateBookService)
+  .to(UpdateBookService);
+container
+  .bind<IDeleteBookService>(TYPES.IDeleteBookService)
+  .to(DeleteBookService);
 
 export { container };

@@ -2,6 +2,8 @@ import { IBookRepository } from "@/Interfaces/IBookRepository";
 import { ISearchBookService } from "../Interfaces/ISearchBookService";
 import { IBookCategoryRepository } from "../Interfaces/IBookCategoryRepository";
 import { IRegisterBookService } from "../Interfaces/IRegisterBookService";
+import { IUpdateBookService } from "../Interfaces/IUpdateBookService";
+import { IDeleteBookService } from "../Interfaces/IDeleteBookService";
 /**
  * 演習 6-2 データアクセスとサービスを実装する
  * DIコンテナ用の識別子(Symbol)定義
@@ -13,4 +15,6 @@ export const TYPES = {
   IBookCategoryRepository: Symbol.for("IBookCategoryRepository"),
   ISearchBookService: Symbol.for("ISearchBookService"),
   IRegisterBookService: Symbol.for("IRegisterBookService"),
+  IUpdateBookService: Symbol.for("IUpdateBookService"),
+  IDeleteBookService: Symbol.for("IDeleteBookService"),
 };
